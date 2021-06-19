@@ -16,7 +16,7 @@ operator-sdk init --plugins helm --domain samutup.com --helm-chart <existing_hel
 eg.
 
 ```shell
-perator-sdk init --plugins helm --domain samutup.com --helm-chart ../minimart/chart
+operator-sdk init --plugins helm --domain samutup.com --helm-chart ../minimart/chart
 ```
 This is the template for `operator` package generated
 
