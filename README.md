@@ -207,6 +207,88 @@ kubectl delete -f config/samples/charts_v1alpha1_minimart.yaml
 make undeploy
 ```
 
+```text
+Name:         minimarts.charts.samutup.com
+Namespace:    
+Labels:       <none>
+Annotations:  <none>
+API Version:  apiextensions.k8s.io/v1
+Kind:         CustomResourceDefinition
+Metadata:
+  Creation Timestamp:  2021-06-19T12:55:17Z
+  Generation:          1
+  Managed Fields:
+    API Version:  apiextensions.k8s.io/v1
+    Fields Type:  FieldsV1
+    fieldsV1:
+      f:status:
+        f:acceptedNames:
+          f:kind:
+          f:listKind:
+          f:plural:
+          f:singular:
+        f:conditions:
+    Manager:      kube-apiserver
+    Operation:    Update
+...
+Spec:
+  Conversion:
+    Strategy:  None
+  Group:       charts.samutup.com
+  Names:
+    Kind:       Minimart
+    List Kind:  MinimartList
+    Plural:     minimarts
+    Singular:   minimart
+  Scope:        Namespaced
+  Versions:
+    Name:  v1alpha1
+    ...
+```
+
+This is exposing an endpoint
+
+```text
+/apis/charts.samutup.com/v1alpha1
+```
+
+```json
+{
+    "kind": "APIResourceList",
+    "apiVersion": "v1",
+    "groupVersion": "charts.samutup.com/v1alpha1",
+    "resources": [
+        {
+            "name": "minimarts",
+            "singularName": "minimart",
+            "namespaced": true,
+            "kind": "Minimart",
+            "verbs": [
+                "delete",
+                "deletecollection",
+                "get",
+                "list",
+                "patch",
+                "create",
+                "update",
+                "watch"
+            ],
+            "storageVersionHash": "wqUOO9GS5iM="
+        },
+        {
+            "name": "minimarts/status",
+            "singularName": "",
+            "namespaced": true,
+            "kind": "Minimart",
+            "verbs": [
+                "get",
+                "patch",
+                "update"
+            ]
+        }
+    ]
+}
+```
 ## Ansible Based
 
 ## Golang Based
