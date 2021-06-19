@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "minimart.fullname" . }}
+  labels:
+    {{- include "minimart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "minimart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "minimart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "minimart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.apps.httpport }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: http
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: http
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+          env:
+          {{- if .Values.dev }}
+          - name: JAVA_OPTS
+            value: -server -Xss256k -Xms1024m -Xmx1024m -XX:ParallelGCThreads=1 -XX:+PerfDisableSharedMem -XX:+UseParallelOldGC -XX:CICompilerCount=2 -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.bin -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -Dcom.sun.management.jmxremote.port=31084 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.rmi.port=31084 -Djava.rmi.server.hostname=localhost
+          {{- else }}
+          - name: JAVA_OPTS
+            value: -server -Xss256k -Xms1024m -Xmx1024m -XX:ParallelGCThreads=1 -XX:+PerfDisableSharedMem -XX:+UseParallelOldGC -XX:CICompilerCount=2 -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.bin -Dcom.sun.management.jmxremote.port=31084 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.rmi.port=31084 -Djava.rmi.server.hostname=localhost
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: configmap
+              mountPath: /app/etc/minimart
+      volumes:
+        - name: configmap
+          configMap:
+            name: {{ .Chart.Name }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

@@ -1,0 +1,18 @@
+# Define routing rules
+---
+providers:
+    - id: stat
+      path: "{{ .Values.apps.rest.stat }}"
+      items:
+      - book
+      - scissor
+      - ruler
+      - eraser
+    - id: beverage
+      path: "{{ .Values.apps.rest.bev }}"
+      items:
+      - beer
+      - wine
+server:
+    httpport: {{ .Values.apps.httpport }}
+

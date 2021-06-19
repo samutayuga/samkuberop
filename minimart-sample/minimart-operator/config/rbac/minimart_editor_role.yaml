@@ -1,0 +1,24 @@
+# permissions for end users to edit minimarts.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: minimart-editor-role
+rules:
+- apiGroups:
+  - charts.samutup.com
+  resources:
+  - minimarts
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - charts.samutup.com
+  resources:
+  - minimarts/status
+  verbs:
+  - get

@@ -1,0 +1,13 @@
+image:
+  repository: samutup/minimart
+  tag: "1.0.1"
+service:
+  type: NodePort
+  ports:
+    http_port: 30841
+    debug_port: 30842
+apps:
+  httpport: 8002
+  rest:
+    stat: "/hello1"
+    bev: "/hello2"
