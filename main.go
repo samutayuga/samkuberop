@@ -9,6 +9,8 @@ import (
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
@@ -21,6 +23,14 @@ import (
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/oidc"
 	// _ "k8s.io/client-go/plugin/pkg/client/auth/openstack"
+)
+
+var (
+	runtimeClassGVR = schema.GroupVersionResource{
+		Group:    "charts.samutup.com",
+		Version:  "v1alpha1",
+		Resource: "minimarts",
+	}
 )
 
 func main() {
@@ -40,6 +50,24 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
+	//apixClient, err := apixv1beta1client.NewForConfig(config)
+	//errExit("Failed to load apiextensions client", err)
+
+	//_ := apixClient.CustomResourceDefinitions()
+
+	if cl, err := dynamic.NewForConfig(config); err == nil {
+		ri := cl.Resource(runtimeClassGVR)
+		//ri.Update(context.TODO(),&unstructured.Unstructured{})
+		if l, err := ri.List(context.TODO(), metav1.ListOptions{}); err == nil {
+			for _, crd := range l.Items {
+				fmt.Printf("test %v", crd)
+
+			}
+		}
+
+	}
+
+	//client.Resource
 	for {
 		pods, err := clientset.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
