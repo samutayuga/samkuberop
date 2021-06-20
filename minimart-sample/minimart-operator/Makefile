@@ -103,7 +103,7 @@ endif
 
 .PHONY: helm-operator
 HELM_OPERATOR = $(shell pwd)/bin/helm-operator
-helm-operator: ## Download helm-operator locally if necessary, preferring the $(pwd)/bin path over global if both exist.
+helm-operator: ## Download helm-operator locally if necessary, preferring the $(pwd)/bin resourcePath over global if both exist.
 ifeq (,$(wildcard $(HELM_OPERATOR)))
 ifeq (,$(shell which helm-operator 2>/dev/null))
 	@{ \

@@ -1,0 +1,11 @@
+# Define routing rules
+---
+kube_resources:
+  - id: pod
+    path: "/pods"
+  - id: deployment
+    path: "/deps"
+  - id: service
+    path: "/services"
+engine:
+  httpport: 8001

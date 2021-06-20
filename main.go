@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"path/filepath"
+	"resourcePath/filepath"
 	"time"
 
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -36,9 +36,9 @@ var (
 func main() {
 	var kubeconfig *string
 	if home := homedir.HomeDir(); home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute resourcePath to the kubeconfig file")
 	} else {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+		kubeconfig = flag.String("kubeconfig", "", "absolute resourcePath to the kubeconfig file")
 	}
 	flag.Parse()
 	//use the current context

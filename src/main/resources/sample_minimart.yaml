@@ -1,0 +1,30 @@
+apiVersion: charts.samutup.com/v1alpha1
+kind: Minimart
+metadata:
+  name: minimart-sample
+spec:
+  # Default values copied from <project_dir>/helm-charts/minimart/values.yaml
+  affinity: {}
+  apps:
+    httpport: 8002
+    rest:
+      bev: /minimart-bev
+      stat: /minimart-stat
+  replicaCount: 2
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: IfNotPresent
+    repository: samutup/minimart
+    tag: 1.0.1
+  service:
+    type: NodePort
+    ports:
+      http_port: 30841
+      debug_port: 30842
+  
+  

@@ -3,8 +3,8 @@
 > It could be interesting to have a REST API exposed, to control the new deployment triggered by the api client
 
 ## Helm Based
-The existing helm chart are embedded int the operator `Operator` pattern . The operator implementation itself can be installed as a helm chart as well. 
-Once it is running, it will `watch` the object of a certain `Kind`, most likeyly is an object of `Custom Resource`.  There is a concept `primary` and `secondary` resources. But for this brief introduction it may not be so interesting.
+The existing helm chart are embedded in the `Operator` pattern . The operator implementation itself can be installed as a helm chart as well. 
+Once it is running, it will `watch` the object of a certain `Kind`, which is the `Custom Resource`.  There is a concept `primary` and `secondary` resources. But for this brief introduction it may not be so interesting.
 
 `Creation`
 
@@ -292,7 +292,9 @@ This is exposing an endpoint
 # How to trigger the Custom Resource changes from Application.
 
 While in the above example, the CR update is through `kubectl apply -f`, there is still not very clear how this can be triggered from the application.
-For example, the click buttom on portal will trigger the update on the CR so that, the operator will do action on the Custom Object.
+For example, the click button on portal will trigger the update on the CR so that, the operator will do action on the Custom Object.
+
+
 
 ## Ansible Based
 
