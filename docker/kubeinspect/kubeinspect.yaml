@@ -1,11 +1,20 @@
 # Define routing rules
 ---
 kube_resources:
-  - id: pod
-    path: "/pods"
-  - id: deployment
-    path: "/deps"
-  - id: service
-    path: "/services"
+  - id: ATC
+    path: "/atc"
+    group: "attwin.airlab.com"
+    version: "v1alpha1"
+    kind: "Atcattwin"
+  - id: PROTO
+    path: "/proto"
+    group: "attwin.airlab.com"
+    version: "v1alpha1"
+    kind: "Protoattwin"
+  - id: SIM
+    path: "/sim"
+    group: "attwin.airlab.com"
+    version: "v1alpha1"
+    kind: "Simattwin"
 engine:
   httpport: 8001

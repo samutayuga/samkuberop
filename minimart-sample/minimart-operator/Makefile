@@ -28,7 +28,7 @@ BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 # This variable is used to construct full image tags for bundle and catalog images.
 #
 # For example, running 'make bundle-build bundle-push catalog-build catalog-push' will build and push both
-# samutup.com/minimart-operator-bundle:$VERSION and samutup.com/minimart-operator-catalog:$VERSION.
+# airlab.com/minimart-operator-bundle:$VERSION and airlab.com/minimart-operator-catalog:$VERSION.
 IMAGE_TAG_BASE ?= samutup/minimart-operator
 
 # BUNDLE_IMG defines the image:tag used for the bundle.
@@ -103,7 +103,7 @@ endif
 
 .PHONY: helm-operator
 HELM_OPERATOR = $(shell pwd)/bin/helm-operator
-helm-operator: ## Download helm-operator locally if necessary, preferring the $(pwd)/bin resourcePath over global if both exist.
+helm-operator: ## Download helm-operator locally if necessary, preferring the $(pwd)/bin path over global if both exist.
 ifeq (,$(wildcard $(HELM_OPERATOR)))
 ifeq (,$(shell which helm-operator 2>/dev/null))
 	@{ \

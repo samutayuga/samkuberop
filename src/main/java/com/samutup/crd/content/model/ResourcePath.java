@@ -12,49 +12,81 @@ import com.google.common.base.Objects;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class ResourcePath {
 
-    private String id;
+  private String id;
 
-    private String path;
+  private String path;
+  private String group;
+  private String version;
+  private String kind;
 
-    public String getId() {
-        return id;
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+  public String getGroup() {
+    return group;
+  }
+
+  public void setGroup(String group) {
+    this.group = group;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
+  }
+
+  public String getKind() {
+    return kind;
+  }
+
+  public void setKind(String kind) {
+    this.kind = kind;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    public void setId(String id) {
-        this.id = id;
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
+    ResourcePath that = (ResourcePath) o;
+    return Objects.equal(id, that.id) && Objects
+        .equal(path, that.path) && Objects.equal(group, that.group)
+        && Objects.equal(version, that.version)
+        && Objects.equal(kind, that.kind);
+  }
 
-    public String getPath() {
-        return path;
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id, path, group, version, kind);
+  }
 
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ResourcePath that = (ResourcePath) o;
-        return Objects.equal(id, that.id) && Objects
-            .equal(path, that.path);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id, path);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-            .add("id", id)
-            .add("path", path)
-            .toString();
-    }
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("path", path)
+        .add("group", group)
+        .add("version", version)
+        .add("kind", kind)
+        .toString();
+  }
 }

@@ -1,6 +1,9 @@
+dev: true
 image:
-  repository: samutup/kubeinspect
-  tag: "1.0.1"
+  repository: samutup/kube-inspect
+  tag: "1.0.3"
 service:
   type: NodePort
-  port: 30741
+  ports:
+    nodePort: 30741
+    debugPort: 30742

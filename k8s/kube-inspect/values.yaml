@@ -83,7 +83,8 @@ tolerations: []
 affinity: {}
 app:
   httpport: 8002
-  paths:
-    pods: /pods
-    deps: /devs
-    services: /services
+  attwinSession:
+    atc: "ATC"
+    sim: "SIM"
+    proto: "PROTO"
+    minimart: "MINIMART"

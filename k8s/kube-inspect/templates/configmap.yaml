@@ -5,11 +5,25 @@ metadata:
 data:
   kubeinspect.yaml: |
     kube_resources:
-      - id: pod
-        path: "{{ .Values.app.paths.pods }}"
-      - id: deployment
-        path: "{{ .Values.app.paths.deps }}"
-      - id: service
-        path: "{{ .Values.app.paths.services }}"
+      - id: {{.Values.app.attwinSession.atc }}
+        path: "/atc"
+        group: "attwin.airlab.com"
+        version: "v1alpha1"
+        kind: "Atcattwin"
+      - id: {{.Values.app.attwinSession.proto }}
+        path: "/proto"
+        group: "attwin.airlab.com"
+        version: "v1alpha1"
+        kind: "Protoattwin"
+      - id: {{.Values.app.attwinSession.sim }}
+        path: "/sim"
+        group: "attwin.airlab.com"
+        version: "v1alpha1"
+        kind: "Simattwin"
+      - id: {{.Values.app.attwinSession.minimart }}
+        path: "/minimart"
+        group: "sample.airlab.com"
+        version: "v1beta1"
+        kind: "Minimart"
     engine:
       httpport: {{ .Values.app.httpport }}

@@ -7,9 +7,21 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.app.httpport }}
+      targetPort: {{ .Values.app.httpport }}
       protocol: TCP
       name: http
+    {{- if contains "NodePort" .Values.service.type }}
+      nodePort: {{ .Values.service.ports.nodePort }}
+    {{- end }}
+    {{- if .Values.dev }}
+    - name: remote-debug
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+    {{- if contains "NodePort" .Values.service.type }}
+      nodePort: {{ .Values.service.ports.debugPort }}
+    {{- end }}
+    {{- end }}
   selector:
     {{- include "kube-inspect.selectorLabels" . | nindent 4 }}

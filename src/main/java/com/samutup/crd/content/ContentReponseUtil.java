@@ -4,17 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samutup.crd.content.config.ContentSettings;
+import com.samutup.crd.content.model.ErrorMessage;
 import com.samutup.crd.content.model.ResourcePath;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.impl.logging.Logger;
 import io.vertx.core.impl.logging.LoggerFactory;
+import io.vertx.core.json.Json;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.kafka.client.consumer.KafkaConsumerRecord;
-import io.vertx.kafka.client.producer.RecordMetadata;
+import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class ContentReponseUtil {
 
@@ -53,57 +54,57 @@ public class ContentReponseUtil {
   }
 
 
-  public static Handler<RoutingContext> handleRequest(ContentSettings contentSettings) {
+  public static Handler<RoutingContext> handleRequest(ContentSettings contentSettings,
+      CRDFacade crdFacade) {
     return rc -> {
-      //TODO: input validation
-      //Map<String, String> paths = rc.get(AtmConfig.PATHS.configVal);
+      String availableName = contentSettings.getResourcePaths().stream().map(
+          ResourcePath::getPath)
+          .collect(
+              Collectors.joining(","));
       String uri = rc.request().uri();
+      Optional<ResourcePath> resourcePath = contentSettings.getResourcePaths().stream()
+          .filter(p -> uri.startsWith(p.getPath())).findFirst();
 
-      if (HttpMethod.POST.equals(rc.request().method())) {
-        //handlePost(contentSettings, uri, rc, kafkaProducer);
-        //call kafka producer
-        rc.response().setStatusCode(HttpResponseStatus.BAD_REQUEST.code())
-            .end(ContentReponseUtil.toJsonString(contentSettings.getResourcePaths()));
-      } else if (HttpMethod.GET.equals(rc.request().method())) {
-        Optional<ResourcePath> atmProviderOptional = contentSettings.getResourcePaths().stream()
-            .filter(p -> uri.startsWith(p.getPath())).findFirst();
-        if (atmProviderOptional.isPresent()) {
-          ResourcePath resourcePath = atmProviderOptional.get();
-          //Future.succeededFuture(new JsonObject().put("hello", "world"));
-          LOGGER.info("serving the request with path " + uri);
+      if (resourcePath.isEmpty()) {
+        rc.response().setStatusCode(HttpResponseStatus.NOT_FOUND.code())
+            .putHeader("Content-Type", "application/json")
+            .end(ContentReponseUtil
+                .toJsonString(
+                    new ErrorMessage().setErrMessage("available resource " + availableName)));
+      } else {
+        //get the path config
+        ResourcePath rp = resourcePath.get();
+        LOGGER.info("resource path " + resourcePath);
+        if (HttpMethod.POST.equals(rc.request().method())) {
+          try {
+            String strBody = rc.getBodyAsString();
+            Map atTwinSession = Json.decodeValue(strBody, Map.class);
+            LOGGER.info("serving POST for " + uri + " body=" + strBody);
+            //do business logic
+            //perform crd request
+            crdFacade.create(atTwinSession, rp, rc);
 
-          //search over topic config
-          KubePodLocator kubePodLocator = new KubePodLocator();
-          String[] paths = uri.split("/");
-          if (paths.length == 3) {
-            //if () {
-            LOGGER.info("set the size of replica to be " + paths[1]);
-            kubePodLocator.scale(Integer.parseInt(paths[2]));
-            //}
+
+          } catch (Exception anyException) {
+            LOGGER.error("error ", anyException);
+            rc.response().setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code())
+                .putHeader("Content-Type", "application/json")
+                .end(ContentReponseUtil
+                    .toJsonString(new ErrorMessage().setErrMessage(anyException.getMessage())));
           }
-          rc.response().setStatusCode(HttpResponseStatus.OK.code())
-              .putHeader("Content-Type", "application/json")
-              .end(ContentReponseUtil.toJsonString(resourcePath));
+
+
+        } else if (HttpMethod.GET.equals(rc.request().method())) {
+          Optional<ResourcePath> atmProviderOptional = contentSettings.getResourcePaths().stream()
+              .filter(p -> uri.startsWith(p.getPath())).findFirst();
 
         } else {
-          rc.response().setStatusCode(HttpResponseStatus.BAD_REQUEST.code())
-              .end(ContentReponseUtil.toJsonString(contentSettings.getResourcePaths()));
+          rc.response().setStatusCode(HttpResponseStatus.BAD_REQUEST.code()).end();
         }
-      } else {
-        rc.response().setStatusCode(HttpResponseStatus.BAD_REQUEST.code()).end();
       }
+
+
     };
 
   }
-
-
-  public static Consumer<KafkaConsumerRecord<String, String>> recordConsumer = consumerRecord -> LOGGER
-      .info(
-          "processing key=" + consumerRecord.key() + " value=" + consumerRecord.value()
-              + " partition=" + consumerRecord.partition()
-              + " offset=" + consumerRecord.offset());
-  public static Handler<RecordMetadata> metadataHandler = event -> LOGGER
-      .info(
-          "topic=" + event.getTopic() + " offset=" + event.getOffset()
-              + " partition=" + event.getPartition());
 }

@@ -56,12 +56,20 @@ spec:
             timeoutSeconds: 1
             successThreshold: 1
           env:
-          {{- if .Values.dev }}
-          - name: JAVA_OPTS
-            value: -server -Xss256k -Xms1024m -Xmx1024m -XX:ParallelGCThreads=1 -XX:+PerfDisableSharedMem -XX:+UseParallelOldGC -XX:CICompilerCount=2 -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.bin -agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -Dcom.sun.management.jmxremote.port=31074 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.rmi.port=31084 -Djava.rmi.server.hostname=localhost
-          {{- else }}
-          - name: JAVA_OPTS
-            value: -server -Xss256k -Xms1024m -Xmx1024m -XX:ParallelGCThreads=1 -XX:+PerfDisableSharedMem -XX:+UseParallelOldGC -XX:CICompilerCount=2 -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.bin -Dcom.sun.management.jmxremote.port=31084 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.rmi.port=31074 -Djava.rmi.server.hostname=localhost
+            - name: APISERVER
+              value: https://kubernetes.default.svc
+            - name: SERVICEACCOUNT
+              value: /var/run/secrets/kubernetes.io/serviceaccount
+            - name: NAMESPACE
+              value: {{ .Release.Namespace }}
+            - name: CACERT
+              value: ${SERVICEACCOUNT}/ca.crt
+           {{- if .Values.dev }}
+            - name: JAVA_OPTS
+              value: -server -Xss256k -Xms1024m -Xmx1024m -XX:ParallelGCThreads=1 -XX:+PerfDisableSharedMem -XX:+UseParallelOldGC -XX:CICompilerCount=2 -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.bin -agentlib:jdwp=transport=dt_socket,server=y,address=*:8000,suspend=n -Dcom.sun.management.jmxremote.port=31074 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.rmi.port=31084 -Djava.rmi.server.hostname=localhost
+           {{- else }}
+            - name: JAVA_OPTS
+              value: -server -Xss256k -Xms1024m -Xmx1024m -XX:ParallelGCThreads=1 -XX:+PerfDisableSharedMem -XX:+UseParallelOldGC -XX:CICompilerCount=2 -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/heapdump.bin -Dcom.sun.management.jmxremote.port=31084 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.rmi.port=31074 -Djava.rmi.server.hostname=localhost
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -7,4 +7,4 @@ metrics:
 
 leaderElection:
   leaderElect: true
-  resourceName: 811c9dc5.samutup.com
+  resourceName: 811c9dc5.airlab.com

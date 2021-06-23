@@ -74,6 +74,9 @@ spec:
 	.....
 ```
 
+-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:30742
+-agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=n -Dcom.sun.management.jmxremote.port=31074
+
 
 
 
@@ -339,4 +342,62 @@ The `reconcile loop` is passed the request argument which is `Namespace/Name` ke
 ```go
 
 ```
+# Role Binding
+By default without associating the service account for a pod on `cluster-admin` the following error will be encountered,
+```json
+{
+    "err_message": "cannot update the objectFailure executing: POST at: https://10.96.0.1/apis/apiextensions.k8s.io/v1/customresourcedefinitions. Message: Forbidden!Configured service account doesn't have access. Service account may have been revoked. customresourcedefinitions.apiextensions.k8s.io is forbidden: User \"system:serviceaccount:default:kube-inspect\" cannot create resource \"customresourcedefinitions\" in API group \"apiextensions.k8s.io\" at the cluster scope."
+}
+```
+```shell
+kubectl create rolebinding default-admin \
+  --clusterrole=view \
+  --serviceaccount=default:default \
+  --namespace=default
+```
 
+```shell
+kubectl create clusterrolebinding kube-inspect-clusteradmin-binding --clusterrole=cluster-admin --serviceaccount=default:kube-inspect
+```
+
+```shell
+kubectl create clusterrolebinding kube-inspect-view-binding --clusterrole=view --serviceaccount=default:kube-inspect
+
+```
+
+```shell
+o.fabric8.kubernetes.client.KubernetesClientException: Failure executing: 
+POST at: https://10.96.0.1/apis/apiextensions.k8s.io/v1/customresourcedefinitions. 
+Message: Minimart in version "v1alpha1" cannot be handled as a CustomResourceDefinition: 
+no kind "Minimart" is registered for version "charts.samutup.com/v1alpha1" 
+in scheme "k8s.io/apiextensions-apiserver/pkg/apiserver/apiserver.go:52". 
+Received status: Status(apiVersion=v1, code=400, details=null, kind=Status, 
+message=Minimart in version "v1alpha1" cannot be handled as a CustomResourceDefinition: 
+no kind "Minimart" is registered for version "charts.samutup.com/v1alpha1" 
+in scheme "k8s.io/apiextensions-apiserver/pkg/apiserver/apiserver.go:52", 
+metadata=ListMeta(_continue=null, remainingItemCount=null, resourceVersion=null, selfLink=null, additionalProperties={}), 
+reason=BadRequest, status=Failure, additionalProperties={}).
+```
+
+```shell
+CustomResourceDefinition(apiVersion=sample.airlab.com/v1beta1, kind=Minimart, 
+metadata=ObjectMeta(annotations=null, clusterName=null, creationTimestamp=null,
+ deletionGracePeriodSeconds=null, deletionTimestamp=null, finalizers=[], 
+ generateName=null, generation=null, labels=null, managedFields=[], name=minimart-sample, namespace=null, 
+ ownerReferences=[], resourceVersion=null, selfLink=null, uid=null, additionalProperties={}),
+  spec=CustomResourceDefinitionSpec(conversion=null, group=null, names=null, preserveUnknownFields=null, 
+  scope=null, versions=[], additionalProperties={image={pullPolicy=IfNotPresent, repository=samutup/minimart, tag=1.0.2}, 
+  nameOverride=, podSecurityContext={}, imagePullSecrets=[], resources={}, 
+  serviceAccount={annotations={}, create=true, name=}, securityContext={}, podAnnotations={}, nodeSelector={}, 
+  ingress={annotations={}, enabled=false, hosts=[{host=samutup.local, paths=[{backend={serviceName=minimart, servicePort=8002}, path=/}]}], tls=[]}, 
+  replicaCount=3, tolerations=[], service={port=80, type=ClusterIP}, fullnameOverride=,
+   autoscaling={enabled=false, maxReplicas=100, minReplicas=1, targetCPUUtilizationPercentage=80}, 
+   affinity={}, apps={httpport=8002, rest={bev=/minimart-bev, stat=/minimart-stat}}}), status=null, additionalProperties={})
+```
+```shell
+{"apiVersion":"sample.airlab.com/v1beta1","kind":"Minimart","metadata":{"name":"minimart-sample"},"spec":{"versions":[],"image":{"pullPolicy":"IfNotPresent","repository":"samutup/minimart","tag":"1.0.2"},"nameOverride":"","podSecurityContext":{},"imagePullSecrets":[],"resources":{},"serviceAccount":{"annotations":{},"create":true,"name":""},"securityContext":{},"podAnnotations":{},"nodeSelector":{},"ingress":{"annotations":{},"enabled":false,"hosts":[{"host":"samutup.local","paths":[{"backend":{"serviceName":"minimart","servicePort":8002},"path":"/"}]}],"tls":[]},"replicaCount":"1","tolerations":[],"service":{"port":80,"type":"ClusterIP"},"fullnameOverride":"","autoscaling":{"enabled":false,"maxReplicas":100,"minReplicas":1,"targetCPUUtilizationPercentage":80},"affinity":{},"apps":{"httpport":8002,"rest":{"bev":"/minimart-bev","stat":"/minimart-stat"}}}}
+```
+
+```shell
+https://10.96.0.1/apis/apiextensions.k8s.io/v1/customresourcedefinitions
+```

@@ -1,0 +1,51 @@
+apiVersion: sample.airlab.com/v1beta1
+kind: Minimart
+metadata:
+  name: minimart-sample
+spec:
+  # Default values copied from <project_dir>/helm-charts/minimart/values.yaml
+  affinity: {}
+  apps:
+    httpport: 8002
+    rest:
+      bev: /minimart-bev
+      stat: /minimart-stat
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: IfNotPresent
+    repository: samutup/minimart
+    tag: 1.0.2
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: samutup.local
+      paths:
+      - backend:
+          serviceName: minimart
+          servicePort: 8002
+        path: /
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  replicaCount: 3
+  resources: {}
+  securityContext: {}
+  service:
+    port: 80
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+  
+  
