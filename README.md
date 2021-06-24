@@ -293,7 +293,19 @@ This is exposing an endpoint
 }
 ```
 # How to trigger the Custom Resource changes from Application.
+```
+crd = kubernetesClient.apiextensions().v1().customResourceDefinitions()
+            .create(crd);
+```
 
+crd = kubernetesClient.apiextensions().v1().customResourceDefinitions()
+.create(crd);
+
+CustomResourceDefinition crd = kubernetesClient.apiextensions().v1()
+.customResourceDefinitions()
+.load(this.getClass()
+.getResourceAsStream("/".concat(rp.getId()).concat(".yaml")))
+.get();
 While in the above example, the CR update is through `kubectl apply -f`, there is still not very clear how this can be triggered from the application.
 For example, the click button on portal will trigger the update on the CR so that, the operator will do action on the Custom Object.
 

@@ -97,6 +97,9 @@ public class ContentReponseUtil {
         } else if (HttpMethod.GET.equals(rc.request().method())) {
           Optional<ResourcePath> atmProviderOptional = contentSettings.getResourcePaths().stream()
               .filter(p -> uri.startsWith(p.getPath())).findFirst();
+          if (atmProviderOptional.isPresent()) {
+            crdFacade.get(resourcePath.get(), rc);
+          }
 
         } else {
           rc.response().setStatusCode(HttpResponseStatus.BAD_REQUEST.code()).end();

@@ -59,7 +59,7 @@ public class CRDFacade {
 
   }
 
-  public void get(ATTwinSession atTwinSession, ResourcePath rp, RoutingContext routingContext) {
+  public void get(ResourcePath rp, RoutingContext routingContext) {
     try {
 
       CustomResourceDefinition crd = kubernetesClient.apiextensions().v1()
@@ -67,20 +67,14 @@ public class CRDFacade {
           .load(this.getClass()
               .getResourceAsStream("/".concat(rp.getId()).concat(".yaml")))
           .get();
-      Map<String, Object> spec = crd.getSpec().getAdditionalProperties();
-      LOGGER.info("existing CR additional properties " + spec);
-      spec.put("replicaCount", atTwinSession.getPayload().get("replicaCount"));
-      Object objCount = spec.get("replicaCount");
-      if ((Integer) objCount == Integer.parseInt(atTwinSession.getPayload().get("replicaCount"))) {
-        crd = kubernetesClient.apiextensions().v1().customResourceDefinitions()
-            .create(crd);
-        LOGGER.info("Upgrade:=" + crd);
-      } else {
-        LOGGER.error("cannot update the object");
-      }
+      routingContext.response().setStatusCode(HttpResponseStatus.OK.code())
+          .end(ContentReponseUtil.toJsonString(crd.toString()));
 
     } catch (Exception exception) {
       LOGGER.error("failed to upgrade ", exception);
+      routingContext.response().setStatusCode(HttpResponseStatus.INTERNAL_SERVER_ERROR.code())
+          .end(ContentReponseUtil
+              .toJsonString(new ErrorMessage().setErrMessage(exception.getMessage())));
     }
 
 
