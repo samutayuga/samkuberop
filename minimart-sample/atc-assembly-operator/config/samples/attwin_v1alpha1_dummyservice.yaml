@@ -1,0 +1,50 @@
+apiVersion: attwin.airlab.aero/v1alpha1
+kind: Dummyservice
+metadata:
+  name: s2
+spec:
+  # Default values copied from <project_dir>/helm-charts/dummyservice/values.yaml
+  affinity: {}
+  app:
+    httpport: 8002
+    rest:
+      bev: /minimart-bev
+      stat: /minimart-stat
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    repository: samutup/minimart
+    tag: 1.0.2
+  imagePullSecrets: []
+  ingress:
+    enabled: false
+  nameOverride: ""
+  namespace: minimart
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  resources: {}
+  securityContext: {}
+  service:
+    #ports:
+    #  debug_port: 30842
+    #  http_port: 30841
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  sessionId: mysession
+  assemblyType: "dummy"
+  used: true
+  capabilities:
+    - state: STOPPED
+      capabilityType: fp
+      replicaCount: 1
+  tolerations: []
+  
+  

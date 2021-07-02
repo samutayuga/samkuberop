@@ -1,0 +1,6 @@
+# Use the 'create api' subcommand to add watches to this file.
+- group: attwin.airlab.aero
+  version: v1alpha1
+  kind: Dummyservice
+  chart: helm-charts/dummyservice
+#+kubebuilder:scaffold:watch
