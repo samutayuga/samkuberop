@@ -1,0 +1,7 @@
+#@formatter:off
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.sessionId }}
+data:
+{{ tpl ((.Files.Glob "configs/*").AsConfig) . | indent 2 }}

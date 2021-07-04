@@ -1,0 +1,23 @@
+# Define routing rules
+---
+providers:
+    - id: stat
+      path: "{{ .Values.app.rest.stat }}"
+      items:
+      - book
+      - scissor
+      - ruler
+      - eraser
+    - id: beverage
+      path: "{{ .Values.app.rest.bev }}"
+      items:
+      - beer
+      - wine
+server:
+    httpport: {{ .Values.app.httpport }}
+sessionId: {{ .Values.sessionId }}
+assemblyType: {{ .Values.assemblyType }}
+used: {{ .Values.used }}
+capabilities:
+{{- toYaml .Values.capabilities | nindent 2 }}
+
