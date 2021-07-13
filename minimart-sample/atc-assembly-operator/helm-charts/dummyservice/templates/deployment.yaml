@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: configmap
           configMap:
-            name: {{ .Values.sessionId }}-config
+            name: {{ .Release.Name }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

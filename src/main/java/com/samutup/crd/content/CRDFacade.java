@@ -1,6 +1,6 @@
 package com.samutup.crd.content;
 
-import com.samutup.crd.content.model.ATTwinSession;
+import com.samutup.crd.content.model.atwinSession;
 import com.samutup.crd.content.model.ErrorMessage;
 import com.samutup.crd.content.model.ResourcePath;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.CustomResourceDefinition;
@@ -21,7 +21,7 @@ public class CRDFacade {
     this.kubernetesClient = kubernetesClient;
   }
 
-  public void create(Map atTwinSession, ResourcePath resourcePath,
+  public void create(Map atwinSession, ResourcePath resourcePath,
       RoutingContext routingContext) {
     try {
 
@@ -32,10 +32,10 @@ public class CRDFacade {
           .get();
       Map<String, Object> spec = crd.getSpec().getAdditionalProperties();
       LOGGER.info("existing CR additional properties " + spec);
-      spec.put("replicaCount", atTwinSession.get("replicaCount"));
+      spec.put("replicaCount", atwinSession.get("replicaCount"));
       Object objCount = spec.get("replicaCount");
       if (Integer.parseInt((String) objCount) == Integer
-          .parseInt((String) atTwinSession.get("replicaCount"))) {
+          .parseInt((String) atwinSession.get("replicaCount"))) {
         crd = kubernetesClient.apiextensions().v1().customResourceDefinitions()
             .create(crd);
         LOGGER.info("Upgrade:=" + crd);

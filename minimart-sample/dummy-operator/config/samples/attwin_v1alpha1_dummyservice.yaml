@@ -1,7 +1,7 @@
-apiVersion: attwin.airlab.aero/v1alpha1
+apiVersion: atwin.airlab.aero/v1alpha1
 kind: Dummyservice
 metadata:
-  name: s2
+  name: dummy-s2
 spec:
   # Default values copied from <project_dir>/helm-charts/dummyservice/values.yaml
   affinity: {}
@@ -19,7 +19,8 @@ spec:
   image:
     repository: samutup/minimart
     tag: 1.0.2
-  imagePullSecrets: []
+  imagePullSecrets:
+   - name: registry
   ingress:
     annotations: {}
     enabled: false
@@ -40,10 +41,8 @@ spec:
   resources: {}
   securityContext: {}
   service:
-    ports:
-      debug_port: 30842
-      http_port: 30841
-    type: NodePort
+    port: 80
+    type: ClusterIP
   serviceAccount:
     annotations: {}
     create: true
@@ -52,8 +51,16 @@ spec:
   assemblyType: "dummy"
   used: true
   capabilities:
-    - state: STOPPED
-      capabilityType: fp
-      replicaCount: 3
+  - state: STOPPED
+    capabilityType: fp
+    replicaCount: 3
+  #sessionId: sess-1
+  #assemblyType: dummy
+  #capabilities:
+  #- capabilityType: st
+  #  replicaCount: 3
+  #  state: STOPPED
+  #used: true
+
   
   

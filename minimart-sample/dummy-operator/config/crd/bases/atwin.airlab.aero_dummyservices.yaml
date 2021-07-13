@@ -16,6 +16,10 @@ spec:
               description: Define attributes the dummy services assembly should have
               type: object
               properties:
+                sessionState:
+                  type: string
+                sessionTemplateId:
+                  type: string
                 sessionId:
                   type: string
                 assemblyType:

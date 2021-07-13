@@ -5,22 +5,22 @@ metadata:
 data:
   kubeinspect.yaml: |
     kube_resources:
-      - id: {{.Values.app.attwinSession.atc }}
+      - id: {{.Values.app.atwinSession.atc }}
         path: "/atc"
-        group: "attwin.airlab.com"
+        group: "atwin.airlab.com"
         version: "v1alpha1"
-        kind: "Atcattwin"
-      - id: {{.Values.app.attwinSession.proto }}
+        kind: "Atcatwin"
+      - id: {{.Values.app.atwinSession.proto }}
         path: "/proto"
-        group: "attwin.airlab.com"
+        group: "atwin.airlab.com"
         version: "v1alpha1"
-        kind: "Protoattwin"
-      - id: {{.Values.app.attwinSession.sim }}
+        kind: "Protoatwin"
+      - id: {{.Values.app.atwinSession.sim }}
         path: "/sim"
-        group: "attwin.airlab.com"
+        group: "atwin.airlab.com"
         version: "v1alpha1"
-        kind: "Simattwin"
-      - id: {{.Values.app.attwinSession.minimart }}
+        kind: "Simatwin"
+      - id: {{.Values.app.atwinSession.minimart }}
         path: "/minimart"
         group: "sample.airlab.com"
         version: "v1beta1"

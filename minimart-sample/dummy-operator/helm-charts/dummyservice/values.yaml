@@ -1,16 +1,10 @@
-# Default values for minimart.
+# Default values for atcassembly.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
-image:
-  repository: samutup/minimart
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.1"
-
-imagePullSecrets: []
+imagePullSecrets:
+ - name: registry
 nameOverride: ""
 fullnameOverride: ""
 
@@ -35,11 +29,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
-
 ingress:
   enabled: false
   annotations: {}
@@ -81,9 +70,26 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-apps:
+app:
   httpport: 8002
   rest:
     stat: "/minimart-stat"
     bev: "/minimart-bev"
+namespace: minimart
+image:
+  repository: samutup/minimart
+  tag: "1.0.2"
+sessionState: INACTIVE
+sessionTemplateId: sessTpl
+sessionId: mysession
+assemblyType: "dummy"
+used: true
+capabilities:
+  - state: STOPPED
+    capabilityType: fp
+    replicaCount: 1
+
+
+service:
+  type: ClusterIP
+  port: 80

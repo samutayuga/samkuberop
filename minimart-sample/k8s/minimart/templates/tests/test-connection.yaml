@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "minimart.fullname" . }}:{{ .Values.apps.httpport }}']
+      args: ['{{ include "minimart.fullname" . }}:{{ .Values.app.httpport }}']
   restartPolicy: Never

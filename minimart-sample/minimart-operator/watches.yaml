@@ -1,6 +1,0 @@
-# Use the 'create api' subcommand to add watches to this file.
-- group: sample.airlab.com
-  version: v1beta1
-  kind: Minimart
-  chart: helm-charts/minimart
-#+kubebuilder:scaffold:watch

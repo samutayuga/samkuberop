@@ -29,10 +29,10 @@ rules:
   - create
 
 ##
-## Rules for sample.airlab.com/v1beta1, Kind: Minimart
+## Rules for atwin.airlab.com/v1alpha1, Kind: Minimart
 ##
 - apiGroups:
-  - sample.airlab.com
+  - atwin.airlab.com
   resources:
   - minimarts
   - minimarts/status

@@ -6,8 +6,9 @@ service:
   ports:
     http_port: 30841
     debug_port: 30842
-apps:
+app:
   httpport: 8002
   rest:
     stat: "/hello1"
     bev: "/hello2"
+namespace: minimart-sample

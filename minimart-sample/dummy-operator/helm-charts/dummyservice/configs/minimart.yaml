@@ -16,6 +16,8 @@ providers:
 server:
     httpport: {{ .Values.app.httpport }}
 sessionId: {{ .Values.sessionId }}
+sessionState: {{ .Values.sessionState }}
+sessionTemplateId: {{ .Values.sessionTemplateId }}
 assemblyType: {{ .Values.assemblyType }}
 used: {{ .Values.used }}
 capabilities:

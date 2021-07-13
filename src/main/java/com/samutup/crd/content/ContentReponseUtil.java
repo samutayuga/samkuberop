@@ -78,11 +78,11 @@ public class ContentReponseUtil {
         if (HttpMethod.POST.equals(rc.request().method())) {
           try {
             String strBody = rc.getBodyAsString();
-            Map atTwinSession = Json.decodeValue(strBody, Map.class);
+            Map atwinSession = Json.decodeValue(strBody, Map.class);
             LOGGER.info("serving POST for " + uri + " body=" + strBody);
             //do business logic
             //perform crd request
-            crdFacade.create(atTwinSession, rp, rc);
+            crdFacade.create(atwinSession, rp, rc);
 
 
           } catch (Exception anyException) {

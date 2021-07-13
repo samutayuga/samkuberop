@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "atcassembly.fullname" . }}
+  namespace: {{ .Values.sessionId }}
   labels:
     {{- include "atcassembly.labels" . | nindent 4 }}
 spec:
@@ -19,6 +20,7 @@ spec:
       {{- end }}
       labels:
         {{- include "atcassembly.selectorLabels" . | nindent 8 }}
+      namespace: {{ .Values.sessionId }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

@@ -1,19 +1,23 @@
-# permissions for end users to view minimarts.
+# permissions for end users to edit minimarts.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: minimart-viewer-role
+  name: minimart-editor-role
 rules:
 - apiGroups:
-  - sample.airlab.com
+  - atwin.airlab.com
   resources:
   - minimarts
   verbs:
+  - create
+  - delete
   - get
   - list
+  - patch
+  - update
   - watch
 - apiGroups:
-  - sample.airlab.com
+  - atwin.airlab.com
   resources:
   - minimarts/status
   verbs:

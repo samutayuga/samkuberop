@@ -82,8 +82,9 @@ tolerations: []
 
 affinity: {}
 
-apps:
+app:
   httpport: 8002
   rest:
     stat: "/minimart-stat"
     bev: "/minimart-bev"
+namespace: minimart

@@ -2,17 +2,17 @@
 ---
 providers:
     - id: stat
-      path: "{{ .Values.apps.rest.stat }}"
+      path: "{{ .Values.app.rest.stat }}"
       items:
       - book
       - scissor
       - ruler
       - eraser
     - id: beverage
-      path: "{{ .Values.apps.rest.bev }}"
+      path: "{{ .Values.app.rest.bev }}"
       items:
       - beer
       - wine
 server:
-    httpport: {{ .Values.apps.httpport }}
+    httpport: {{ .Values.app.httpport }}
 

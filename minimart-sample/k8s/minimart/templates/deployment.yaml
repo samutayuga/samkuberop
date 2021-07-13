@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: {{ .Values.namespace }}
   name: {{ include "minimart.fullname" . }}
   labels:
     {{- include "minimart.labels" . | nindent 4 }}
@@ -13,6 +14,7 @@ spec:
       {{- include "minimart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      namespace: {{ .Values.namespace }}
       {{- with .Values.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
@@ -35,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.apps.httpport }}
+              containerPort: {{ .Values.app.httpport }}
               protocol: TCP
           livenessProbe:
             httpGet:

@@ -1,0 +1,10 @@
+apiVersion: atwin.airlab.com/v1alpha1
+kind: AtcAssembly
+metadata:
+  name: atc-assembly
+spec:
+  # Default values copied from <project_dir>/helm-charts/minimart/values.yaml
+  configMap:
+    activate: {{ .Values.assemblyAtc.activate }}
+  
+  

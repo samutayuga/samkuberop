@@ -83,7 +83,7 @@ tolerations: []
 affinity: {}
 app:
   httpport: 8002
-  attwinSession:
+  atwinSession:
     atc: "ATC"
     sim: "SIM"
     proto: "PROTO"

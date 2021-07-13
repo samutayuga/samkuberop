@@ -3,19 +3,19 @@
 kube_resources:
   - id: ATC
     path: "/atc"
-    group: "attwin.airlab.com"
+    group: "atwin.airlab.com"
     version: "v1alpha1"
-    kind: "Atcattwin"
+    kind: "Atcatwin"
   - id: PROTO
     path: "/proto"
-    group: "attwin.airlab.com"
+    group: "atwin.airlab.com"
     version: "v1alpha1"
-    kind: "Protoattwin"
+    kind: "Protoatwin"
   - id: SIM
     path: "/sim"
-    group: "attwin.airlab.com"
+    group: "atwin.airlab.com"
     version: "v1alpha1"
-    kind: "Simattwin"
+    kind: "Simatwin"
   - id: MINIMART
     path: "/minimart"
     group: "sample.airlab.com"

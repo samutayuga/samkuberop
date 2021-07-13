@@ -1,4 +1,4 @@
-apiVersion: attwin.airlab.aero/v1alpha1
+apiVersion: atwin.airlab.aero/v1alpha1
 kind: Dummyservice
 metadata:
   name: s2

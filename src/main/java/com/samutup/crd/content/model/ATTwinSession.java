@@ -10,7 +10,7 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 //@JsonIgnoreProperties(ignoreUnknown = false)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ATTwinSession {
+public class atwinSession {
 
   Map<String, String> payload;
 
@@ -31,7 +31,7 @@ public class ATTwinSession {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ATTwinSession that = (ATTwinSession) o;
+    atwinSession that = (atwinSession) o;
     return Objects.equal(payload, that.payload);
   }
 

@@ -29,10 +29,10 @@ rules:
   - create
 
 ##
-## Rules for attwin.airlab.aero/v1alpha1, Kind: Dummyservice
+## Rules for atwin.airlab.aero/v1alpha1, Kind: Dummyservice
 ##
 - apiGroups:
-  - attwin.airlab.aero
+  - atwin.airlab.aero
   resources:
   - dummyservices
   - dummyservices/status

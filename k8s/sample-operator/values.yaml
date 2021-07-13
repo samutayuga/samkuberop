@@ -1,0 +1,6 @@
+crs:
+  assemblyProto:
+    activate: true
+  assemblySim:
+    activate: true
+  assemblyAtc: true
