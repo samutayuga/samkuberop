@@ -1,8 +1,0 @@
-#@formatter:off
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: {{ .Chart.Name }}
-  namespace: {{ .Values.namespace }}
-data:
-{{ tpl ((.Files.Glob "configs/*").AsConfig) . | indent 2 }}
